@@ -62,6 +62,22 @@ Examples:
 - Do not use any, type assertions, or error suppressions merely to bypass checks.
   Document necessary exceptions and keep them narrowly scoped.
 
+## Accessibility
+
+- Build accessibility into each component as it is implemented, then review
+  complete user journeys before delivery.
+- Prefer semantic HTML and native controls. Add ARIA only where needed.
+- Provide accessible names, keyboard operation, visible focus, and a logical
+  heading and focus order.
+- Check text and control contrast. Do not communicate status through color alone.
+- Make robot selection and essential information available through the list
+  as well as the visual site view.
+- Preserve keyboard focus during live updates. Announce meaningful state
+  changes without announcing every telemetry update.
+- Respect reduced-motion preferences when adding animation.
+- Include manual keyboard and screen-reader checks alongside automated checks
+  where available. Report any verification limits.
+
 ## Security
 
 - Validate external input on the backend. Frontend validation does not replace
@@ -94,7 +110,7 @@ These are open topics, not implementation instructions. Update this section
 as decisions are agreed.
 
 - Product scope: initial features, acceptance criteria, and deferred work.
-- UI conventions: styling approach, accessibility expectations, and formatting.
+- UI conventions: styling approach, formatting, and any additional accessibility requirements.
 - API conventions: endpoints, payloads, and validation rules.
 - Data: simulator behavior, storage needs, and update transport.
 - Testing: frameworks and the most valuable scenarios to cover.
