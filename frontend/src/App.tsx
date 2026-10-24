@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FleetSummary } from './components/FleetSummary'
 import { RobotDetails } from './components/RobotDetails'
 import { RobotList } from './components/RobotList'
 import { SiteView } from './components/SiteView'
@@ -35,19 +36,10 @@ function App() {
           </p>
         </header>
 
-        <section
-          aria-labelledby="fleet-summary-heading"
-          className="rounded-xl border border-slate-200 bg-white p-5"
-        >
-          <h2 id="fleet-summary-heading" className="text-base font-semibold">
-            {en.fleetSummary.title}
-          </h2>
-          <div className="mt-4 flex min-h-24 items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6">
-            <p className="text-center text-sm text-slate-500">
-              {en.fleetSummary.placeholder}
-            </p>
-          </div>
-        </section>
+        <FleetSummary
+          robots={siteRobots}
+          siteName={selectedSite?.name ?? en.siteView.empty}
+        />
 
         <div className="flex flex-wrap items-center gap-3">
           <label htmlFor="warehouse-select" className="text-sm font-semibold">

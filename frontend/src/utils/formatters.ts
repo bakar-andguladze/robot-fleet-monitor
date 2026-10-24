@@ -6,3 +6,5 @@ export const batteryFormatter = new Intl.NumberFormat('en', {
 export const coordinateFormatter = new Intl.NumberFormat('en', {
   maximumFractionDigits: 0,
 })
+
+export const countFormatter = new Intl.NumberFormat('en')

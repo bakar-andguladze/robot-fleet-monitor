@@ -6,7 +6,7 @@ export const en = {
   },
   fleetSummary: {
     title: 'Fleet summary',
-    placeholder: 'Fleet summary placeholder',
+    total: 'Total robots',
   },
   simulation: {
     running: 'Simulation running',
