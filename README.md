@@ -4,10 +4,8 @@ A robot fleet monitoring project based on a take-home engineering challenge.
 
 ## Problem
 
-Robots operate across multiple sites and report telemetry, such as battery level
-and position, approximately once per second. A fleet management system receives
-and stores these updates, then presents the current state of the fleet and
-individual robots to an operator.
+Robots operate across multiple sites and report telemetry, such as battery level and position, approximately once per second. 
+A fleet management system receives and stores these updates, then presents the current state of the fleet and individual robots to an operator.
 
 ## Challenge overview
 
@@ -18,9 +16,8 @@ The system is divided into three areas:
    data through an interface for the frontend.
 3. **Frontend:** display the fleet overview and details of a selected robot.
 
-The brief leaves specific features and implementation choices open. Choosing a
-useful scope, deciding which cases to handle, and making deliberate tradeoffs
-are part of the challenge.
+The brief leaves specific features and implementation choices open. 
+Choosing a useful scope, deciding which cases to handle, and making deliberate tradeoffs are part of the challenge.
 
 ## Scope
 
@@ -51,9 +48,9 @@ As the project develops, this `README` will document:
 ## Backend data API
 
 The Express backend loads initial warehouse and robot snapshots from
-`backend/data/sites.json` and `backend/data/robots.json`. It validates the
-files before listening, including IDs, warehouse references, battery levels,
-and coordinate bounds. Invalid or missing data prevents startup.
+`backend/data/sites.json` and `backend/data/robots.json`. 
+It validates the files before listening, including IDs, warehouse references, battery levels, and coordinate bounds. 
+Invalid or missing data prevents startup.
 
 From `backend/`:
 
@@ -64,6 +61,13 @@ npm run dev
 
 The API defaults to port 3000; set `PORT` in `backend/.env` to override it.
 
+Open [Swagger UI](http://localhost:3000/api/docs/) for endpoint descriptions, query parameters, response schemas, and interactive requests. 
+The [OpenAPI document](http://localhost:3000/api/openapi.json) is also available for tools such as Postman. 
+Response schemas are generated from the same Zod schemas used to validate fixtures; 
+endpoint descriptions live in
+`backend/src/openapi.ts`.
+
+
 | Endpoint | Response |
 | --- | --- |
 | `GET /health` | Health status |
@@ -71,16 +75,16 @@ The API defaults to port 3000; set `PORT` in `backend/.env` to override it.
 | `GET /api/robots` | All robots |
 | `GET /api/robots?siteId=site-north` | Robots in the requested warehouse |
 
-An empty warehouse returns `[]`. An unknown warehouse returns 404; an empty
-or repeated `siteId` returns 400. Errors use `{ "error": "message" }`.
-Coordinates use local schematic units. Storage, loading, and charging zones
-are functional areas that robots can enter.
+An empty warehouse returns `[]`. An unknown warehouse returns 404; 
+an empty or repeated `siteId` returns 400. 
+Errors use `{ "error": "message" }`.
+Coordinates use local schematic units.
+Storage, loading, and charging zones are functional areas that robots can enter.
 
-Run `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`
-in `backend/` to check the API. After building, `npm start` runs the compiled
-server. Keep `backend/data/` alongside `backend/dist/`; fixtures are read at
-runtime rather than copied into the build.
+Run `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build` in `backend/` to check the API. 
+After building, `npm start` runs the compiled server. 
+Keep `backend/data/` alongside `backend/dist/`; 
+fixtures are read at runtime rather than copied into the build.
 
-The frontend currently uses its own fixtures and movement simulation. The API
-serves initial snapshots; frontend integration and backend telemetry are later
-steps.
+The frontend currently uses its own fixtures and movement simulation. 
+The API serves initial snapshots; 

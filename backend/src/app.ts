@@ -1,12 +1,23 @@
 ﻿import express from 'express'
+import swaggerUi from 'swagger-ui-express'
 import type { ErrorRequestHandler } from 'express'
 import type { FleetData } from './data/fleetSchema.js'
+import { openApiDocument } from './openapi.js'
 
 export function createApp(fleet: FleetData) {
   const app = express()
 
   app.disable('x-powered-by')
   app.use(express.json({ limit: '100kb' }))
+
+  app.get('/api/openapi.json', (_request, response) => {
+    response.json(openApiDocument)
+  })
+
+  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument, {
+    customSiteTitle: 'Robot Fleet Monitor API',
+    swaggerOptions: { validatorUrl: null },
+  }))
 
   app.get('/health', (_request, response) => {
     response.json({ status: 'ok' })

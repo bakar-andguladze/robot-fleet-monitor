@@ -11,7 +11,7 @@ const zoneSchema = z.object({
   height: z.number().positive(),
 })
 
-const siteSchema = z.object({
+export const siteSchema = z.object({
   id: nonEmptyString,
   name: nonEmptyString,
   width: z.number().positive(),
@@ -19,7 +19,7 @@ const siteSchema = z.object({
   zones: z.array(zoneSchema),
 })
 
-const robotSchema = z.object({
+export const robotSchema = z.object({
   id: nonEmptyString,
   name: nonEmptyString,
   siteId: nonEmptyString,
