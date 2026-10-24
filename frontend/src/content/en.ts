@@ -32,11 +32,10 @@ export const en = {
     noWarehouses: 'No warehouses available.',
     empty: 'No warehouse selected.',
     description: 'Site layout and robot positions.',
-    layout: 'Warehouse layout',
     schematic: 'Schematic - not to scale',
-    mapDescription: 'Static floor plan with storage, loading, and charging areas. Robot positions use local schematic units measured from the top-left corner.',
+    mapDescription: 'Warehouse floor plan with storage, loading, and charging areas. Use Tab to focus robots and Enter or Space to select them. Robot positions use local schematic units measured from the top-left corner.',
     position: 'Position',
-    mockPositions: 'Mock positions for this warehouse. Select a robot from the fleet list to view its details.',
+    mockPositions: 'Mock positions for this warehouse. Select a robot on the map or in the fleet list to view its details.',
     zones: {
       storage: 'Storage',
       loading: 'Loading',

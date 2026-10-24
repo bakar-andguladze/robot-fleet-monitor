@@ -98,7 +98,12 @@ function App() {
               {en.siteView.description}
             </p>
             {selectedSite ? (
-              <SiteView site={selectedSite} robots={siteRobots} />
+              <SiteView
+                site={selectedSite}
+                robots={siteRobots}
+                selectedRobotId={selectedRobotId}
+                onSelectRobot={setSelectedRobotId}
+              />
             ) : (
               <p className="mt-5 text-sm text-slate-600">{en.siteView.empty}</p>
             )}
