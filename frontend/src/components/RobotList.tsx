@@ -4,6 +4,7 @@ import { batteryFormatter } from '../utils/formatters'
 
 type RobotListProps = {
   robots: readonly Robot[]
+  siteName: string
   selectedRobotId: string | null
   onSelectRobot: (robotId: string) => void
 }
@@ -17,6 +18,7 @@ const statusStyles: Record<RobotStatus, string> = {
 
 export function RobotList({
   robots,
+  siteName,
   selectedRobotId,
   onSelectRobot,
 }: RobotListProps) {
@@ -56,7 +58,7 @@ export function RobotList({
                   {en.robotStatus[robot.status]}
                 </span>
               </span>
-              <span className="mt-3 block text-sm text-slate-600">{robot.siteName}</span>
+              <span className="mt-3 block text-sm text-slate-600">{siteName}</span>
               <span className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
                 <span className="font-medium text-teal-800">
                   {isSelected ? en.robotList.selected : ''}

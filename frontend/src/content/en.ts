@@ -28,6 +28,9 @@ export const en = {
   },
   siteView: {
     title: 'Site view',
+    warehouse: 'Warehouse',
+    noWarehouses: 'No warehouses available.',
+    empty: 'No warehouse selected.',
     description: 'Site layout and robot positions.',
     layout: 'Warehouse layout',
     schematic: 'Schematic - not to scale',

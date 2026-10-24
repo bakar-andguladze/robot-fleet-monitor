@@ -1,0 +1,92 @@
+import type { Site } from '../types/site'
+
+export const mockSites: Site[] = [
+  {
+    id: 'site-north',
+    name: 'North Warehouse',
+    width: 800,
+    height: 520,
+    zones: [
+      {
+        id: 'north-storage-west',
+        type: 'storage',
+        x: 40,
+        y: 56,
+        width: 130,
+        height: 244,
+      },
+      {
+        id: 'north-storage-central',
+        type: 'storage',
+        x: 220,
+        y: 56,
+        width: 130,
+        height: 244,
+      },
+      {
+        id: 'north-storage-east',
+        type: 'storage',
+        x: 400,
+        y: 56,
+        width: 130,
+        height: 244,
+      },
+      {
+        id: 'north-loading',
+        type: 'loading',
+        x: 600,
+        y: 56,
+        width: 160,
+        height: 244,
+      },
+      {
+        id: 'north-charging',
+        type: 'charging',
+        x: 40,
+        y: 380,
+        width: 250,
+        height: 96,
+      },
+    ],
+  },
+  {
+    id: 'site-south',
+    name: 'South Warehouse',
+    width: 900,
+    height: 600,
+    zones: [
+      {
+        id: 'south-loading',
+        type: 'loading',
+        x: 40,
+        y: 56,
+        width: 220,
+        height: 470,
+      },
+      {
+        id: 'south-storage-upper',
+        type: 'storage',
+        x: 330,
+        y: 56,
+        width: 330,
+        height: 130,
+      },
+      {
+        id: 'south-storage-lower',
+        type: 'storage',
+        x: 330,
+        y: 260,
+        width: 330,
+        height: 130,
+      },
+      {
+        id: 'south-charging',
+        type: 'charging',
+        x: 720,
+        y: 56,
+        width: 140,
+        height: 150,
+      },
+    ],
+  },
+]

@@ -17,7 +17,7 @@ const zoneStyles: Record<SiteZoneType, string> = {
 export function SiteView({ site, robots }: SiteViewProps) {
   const titleId = useId()
   const descriptionId = useId()
-  const siteRobots = robots.filter((robot) => robot.siteName === site.name)
+  const siteRobots = robots.filter((robot) => robot.siteId === site.id)
   const robotPositions = siteRobots.map((robot) => (
     `${robot.name}: ${en.siteView.position} ${robot.position.x}, ${robot.position.y}.`
   )).join(' ')

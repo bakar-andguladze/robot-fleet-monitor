@@ -4,9 +4,10 @@ import { batteryFormatter } from '../utils/formatters'
 
 type RobotDetailsProps = {
   robot: Robot | null
+  siteName: string
 }
 
-export function RobotDetails({ robot }: RobotDetailsProps) {
+export function RobotDetails({ robot, siteName }: RobotDetailsProps) {
   return (
     <div className="mt-5">
       <p role="status" className="sr-only">
@@ -22,7 +23,7 @@ export function RobotDetails({ robot }: RobotDetailsProps) {
             </div>
             <div>
               <dt className="text-slate-600">{en.robotFields.site}</dt>
-              <dd className="mt-1 font-medium">{robot.siteName}</dd>
+              <dd className="mt-1 font-medium">{siteName}</dd>
             </div>
             <div>
               <dt className="text-slate-600">{en.robotFields.status}</dt>
