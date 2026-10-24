@@ -47,3 +47,40 @@ As the project develops, this `README` will document:
 - The implemented scope and the reasons for choosing it.
 - What is mocked or omitted and the tradeoffs involved.
 - Improvements that would be made with more time or for production use.
+
+## Backend data API
+
+The Express backend loads initial warehouse and robot snapshots from
+`backend/data/sites.json` and `backend/data/robots.json`. It validates the
+files before listening, including IDs, warehouse references, battery levels,
+and coordinate bounds. Invalid or missing data prevents startup.
+
+From `backend/`:
+
+```sh
+npm install
+npm run dev
+```
+
+The API defaults to port 3000; set `PORT` in `backend/.env` to override it.
+
+| Endpoint | Response |
+| --- | --- |
+| `GET /health` | Health status |
+| `GET /api/sites` | All warehouse layouts |
+| `GET /api/robots` | All robots |
+| `GET /api/robots?siteId=site-north` | Robots in the requested warehouse |
+
+An empty warehouse returns `[]`. An unknown warehouse returns 404; an empty
+or repeated `siteId` returns 400. Errors use `{ "error": "message" }`.
+Coordinates use local schematic units. Storage, loading, and charging zones
+are functional areas that robots can enter.
+
+Run `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`
+in `backend/` to check the API. After building, `npm start` runs the compiled
+server. Keep `backend/data/` alongside `backend/dist/`; fixtures are read at
+runtime rather than copied into the build.
+
+The frontend currently uses its own fixtures and movement simulation. The API
+serves initial snapshots; frontend integration and backend telemetry are later
+steps.
