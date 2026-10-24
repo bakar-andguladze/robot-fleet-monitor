@@ -93,6 +93,7 @@ Examples:
 
 ## Verification
 
+- For nontrivial changes, identify relevant failure cases and security assumptions before implementation. On completion, report the verification performed and any remaining limitations.
 - Verify changes with the checks relevant to the affected code.
 - frontend/: npm run lint and npm run build.
 - backend/: npm run lint and npm run build; npm run typecheck checks types
