@@ -4,6 +4,12 @@ export const en = {
     title: 'Robot Fleet Monitor',
     description: 'Monitor your robots across sites.',
   },
+  fleetData: {
+    loading: 'Loading fleet data?',
+    errorTitle: 'Unable to load the fleet',
+    errorDescription: 'Fleet data is unavailable. Please try again.',
+    retry: 'Try again',
+  },
   fleetSummary: {
     title: 'Fleet summary',
     total: 'Total robots',
