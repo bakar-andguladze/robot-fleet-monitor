@@ -6,4 +6,5 @@ export type Robot = {
   siteName: string
   status: RobotStatus
   batteryPercent: number
+  position: { x: number; y: number }
 }

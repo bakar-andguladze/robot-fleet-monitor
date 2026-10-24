@@ -7,6 +7,7 @@ export const mockRobots: Robot[] = [
     siteName: 'North Warehouse',
     status: 'moving',
     batteryPercent: 84,
+    position: { x: 500, y: 210 },
   },
   {
     id: 'RBT-002',
@@ -14,6 +15,7 @@ export const mockRobots: Robot[] = [
     siteName: 'North Warehouse',
     status: 'idle',
     batteryPercent: 62,
+    position: { x: 380, y: 340 },
   },
   {
     id: 'RBT-003',
@@ -21,6 +23,7 @@ export const mockRobots: Robot[] = [
     siteName: 'South Warehouse',
     status: 'charging',
     batteryPercent: 27,
+    position: { x: 130, y: 420 },
   },
   {
     id: 'RBT-004',
@@ -28,6 +31,7 @@ export const mockRobots: Robot[] = [
     siteName: 'South Warehouse',
     status: 'error',
     batteryPercent: 18,
+    position: { x: 500, y: 340 },
   },
   {
     id: 'RBT-005',
@@ -35,6 +39,7 @@ export const mockRobots: Robot[] = [
     siteName: 'South Warehouse',
     status: 'moving',
     batteryPercent: 73,
+    position: { x: 500, y: 180 },
   },
   {
     id: 'RBT-006',
@@ -42,6 +47,7 @@ export const mockRobots: Robot[] = [
     siteName: 'South Warehouse',
     status: 'idle',
     batteryPercent: 91,
+    position: { x: 650, y: 340 },
   },
   {
     id: 'RBT-007',
@@ -49,5 +55,6 @@ export const mockRobots: Robot[] = [
     siteName: 'North Warehouse',
     status: 'moving',
     batteryPercent: 46,
+    position: { x: 650, y: 385 },
   },
 ]

@@ -29,7 +29,16 @@ export const en = {
   siteView: {
     title: 'Site view',
     description: 'Site layout and robot positions.',
-    placeholder: 'Site visualization placeholder',
+    layout: 'Warehouse layout',
+    schematic: 'Schematic - not to scale',
+    mapDescription: 'Static floor plan with storage, loading, and charging areas. Robot positions use local schematic units measured from the top-left corner.',
+    position: 'Position',
+    mockPositions: 'Mock positions for this warehouse. Select a robot from the fleet list to view its details.',
+    zones: {
+      storage: 'Storage',
+      loading: 'Loading',
+      charging: 'Charging',
+    },
   },
   robotDetails: {
     title: 'Robot details',

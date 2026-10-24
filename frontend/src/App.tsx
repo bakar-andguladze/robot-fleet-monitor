@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { RobotDetails } from './components/RobotDetails'
 import { RobotList } from './components/RobotList'
+import { SiteView } from './components/SiteView'
 import { mockRobots } from './data/mockRobots'
+import { mockSite } from './data/mockSite'
 import { en } from './content/en'
 import './App.css'
 
@@ -66,11 +68,7 @@ function App() {
             <p className="mt-1 text-sm text-slate-500">
               {en.siteView.description}
             </p>
-            <div className="mt-5 flex min-h-72 flex-1 items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 sm:min-h-96 lg:min-h-[28rem]">
-              <p className="text-center text-sm text-slate-500">
-                {en.siteView.placeholder}
-              </p>
-            </div>
+            <SiteView site={mockSite} robots={mockRobots} />
           </section>
 
           <aside
