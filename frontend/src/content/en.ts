@@ -11,8 +11,14 @@ export const en = {
   robotList: {
     title: 'Robots',
     description: 'Browse the fleet.',
-    battery: 'Battery',
+    selected: 'Selected',
     empty: 'No robots to display.',
+  },
+  robotFields: {
+    id: 'Robot ID',
+    site: 'Warehouse',
+    status: 'Status',
+    battery: 'Battery',
   },
   robotStatus: {
     moving: 'Moving',
@@ -28,6 +34,7 @@ export const en = {
   robotDetails: {
     title: 'Robot details',
     description: 'A closer look at a selected robot.',
-    placeholder: 'Robot portrait and details placeholder',
+    empty: 'Select a robot to view its details.',
+    selected: 'Selected robot',
   },
 } as const

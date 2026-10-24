@@ -1,9 +1,14 @@
+import { useState } from 'react'
+import { RobotDetails } from './components/RobotDetails'
 import { RobotList } from './components/RobotList'
 import { mockRobots } from './data/mockRobots'
 import { en } from './content/en'
 import './App.css'
 
 function App() {
+  const [selectedRobotId, setSelectedRobotId] = useState<string | null>(null)
+  const selectedRobot = mockRobots.find((robot) => robot.id === selectedRobotId) ?? null
+
   return (
     <main className="min-h-screen bg-slate-50 font-sans text-slate-900">
       <div className="mx-auto max-w-[1600px] space-y-6 px-4 py-8 sm:px-6 lg:px-8">
@@ -44,7 +49,11 @@ function App() {
             <p className="mt-1 text-sm text-slate-500">
               {en.robotList.description}
             </p>
-            <RobotList robots={mockRobots} />
+            <RobotList
+              robots={mockRobots}
+              selectedRobotId={selectedRobotId}
+              onSelectRobot={setSelectedRobotId}
+            />
           </section>
 
           <section
@@ -65,6 +74,7 @@ function App() {
           </section>
 
           <aside
+            id="robot-details"
             aria-labelledby="robot-details-heading"
             className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 lg:col-span-3"
           >
@@ -74,11 +84,7 @@ function App() {
             <p className="mt-1 text-sm text-slate-500">
               {en.robotDetails.description}
             </p>
-            <div className="mt-5 flex min-h-48 flex-1 items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6">
-              <p className="text-center text-sm text-slate-500">
-                {en.robotDetails.placeholder}
-              </p>
-            </div>
+            <RobotDetails robot={selectedRobot} />
           </aside>
         </div>
       </div>
