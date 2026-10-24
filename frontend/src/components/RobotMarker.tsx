@@ -5,6 +5,7 @@ type RobotMarkerProps = {
   robot: Robot
   site: Site
   isSelected: boolean
+  animate: boolean
   onSelectRobot: (robotId: string) => void
 }
 
@@ -12,6 +13,7 @@ export function RobotMarker({
   robot,
   site,
   isSelected,
+  animate,
   onSelectRobot,
 }: RobotMarkerProps) {
   return (
@@ -25,7 +27,7 @@ export function RobotMarker({
         left: `${(robot.position.x / site.width) * 100}%`,
         top: `${(robot.position.y / site.height) * 100}%`,
       }}
-      className="absolute flex size-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+      className={`absolute flex size-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 ${animate ? 'motion-safe:transition-[left,top] motion-safe:duration-1000 motion-safe:ease-linear' : ''}`}
     >
       <span
         aria-hidden="true"

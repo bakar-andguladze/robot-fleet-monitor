@@ -1,6 +1,6 @@
 import { en } from '../content/en'
 import type { Robot } from '../types/robot'
-import { batteryFormatter } from '../utils/formatters'
+import { batteryFormatter, coordinateFormatter } from '../utils/formatters'
 
 type RobotDetailsProps = {
   robot: Robot | null
@@ -33,6 +33,12 @@ export function RobotDetails({ robot, siteName }: RobotDetailsProps) {
               <dt className="text-slate-600">{en.robotFields.battery}</dt>
               <dd className="mt-1 font-medium tabular-nums">
                 {batteryFormatter.format(robot.batteryPercent / 100)}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-slate-600">{en.robotFields.position}</dt>
+              <dd className="mt-1 font-medium tabular-nums">
+                {coordinateFormatter.format(robot.position.x)}, {coordinateFormatter.format(robot.position.y)}
               </dd>
             </div>
           </dl>

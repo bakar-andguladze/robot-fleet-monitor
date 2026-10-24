@@ -2,16 +2,17 @@ import { useState } from 'react'
 import { RobotDetails } from './components/RobotDetails'
 import { RobotList } from './components/RobotList'
 import { SiteView } from './components/SiteView'
-import { mockRobots } from './data/mockRobots'
+import { useRobotSimulation } from './hooks/useRobotSimulation'
 import { mockSites } from './data/mockSites'
 import { en } from './content/en'
 import './App.css'
 
 function App() {
+  const { robots, isPaused, togglePause } = useRobotSimulation()
   const [selectedSiteId, setSelectedSiteId] = useState(mockSites[0]?.id ?? '')
   const [selectedRobotId, setSelectedRobotId] = useState<string | null>(null)
   const selectedSite = mockSites.find((site) => site.id === selectedSiteId) ?? null
-  const siteRobots = mockRobots.filter((robot) => robot.siteId === selectedSiteId)
+  const siteRobots = robots.filter((robot) => robot.siteId === selectedSiteId)
   const selectedRobot = siteRobots.find((robot) => robot.id === selectedRobotId) ?? null
 
   function handleSiteChange(siteId: string) {
@@ -66,6 +67,18 @@ function App() {
               <option key={site.id} value={site.id}>{site.name}</option>
             ))}
           </select>
+          <div className="flex flex-wrap items-center gap-3 sm:ml-auto">
+            <p role="status" className="text-sm text-slate-600">
+              {isPaused ? en.simulation.paused : en.simulation.running}
+            </p>
+            <button
+              type="button"
+              onClick={togglePause}
+              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+            >
+              {isPaused ? en.simulation.resume : en.simulation.pause}
+            </button>
+          </div>
         </div>
 
         <div className="grid items-stretch gap-5 lg:grid-cols-12">
@@ -100,6 +113,7 @@ function App() {
             {selectedSite ? (
               <SiteView
                 site={selectedSite}
+                animate={!isPaused}
                 robots={siteRobots}
                 selectedRobotId={selectedRobotId}
                 onSelectRobot={setSelectedRobotId}

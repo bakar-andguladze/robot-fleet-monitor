@@ -8,6 +8,12 @@ export const en = {
     title: 'Fleet summary',
     placeholder: 'Fleet summary placeholder',
   },
+  simulation: {
+    running: 'Simulation running',
+    paused: 'Simulation paused',
+    pause: 'Pause simulation',
+    resume: 'Resume simulation',
+  },
   robotList: {
     title: 'Robots',
     description: 'Browse the fleet.',
@@ -19,6 +25,7 @@ export const en = {
     site: 'Warehouse',
     status: 'Status',
     battery: 'Battery',
+    position: 'Position (schematic units)',
   },
   robotStatus: {
     moving: 'Moving',
@@ -34,8 +41,7 @@ export const en = {
     description: 'Site layout and robot positions.',
     schematic: 'Schematic - not to scale',
     mapDescription: 'Warehouse floor plan with storage, loading, and charging areas. Use Tab to focus robots and Enter or Space to select them. Robot positions use local schematic units measured from the top-left corner.',
-    position: 'Position',
-    mockPositions: 'Mock positions for this warehouse. Select a robot on the map or in the fleet list to view its details.',
+    mockPositions: 'Simulated positions update once per second. Select a robot on the map or in the fleet list to view its details.',
     zones: {
       storage: 'Storage',
       loading: 'Loading',

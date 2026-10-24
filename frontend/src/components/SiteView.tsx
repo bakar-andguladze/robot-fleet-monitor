@@ -6,6 +6,7 @@ import { RobotMarker } from './RobotMarker'
 
 type SiteViewProps = {
   site: Site
+  animate: boolean
   robots: readonly Robot[]
   selectedRobotId: string | null
   onSelectRobot: (robotId: string) => void
@@ -19,6 +20,7 @@ const zoneStyles: Record<SiteZoneType, string> = {
 
 export function SiteView({
   site,
+  animate,
   robots,
   selectedRobotId,
   onSelectRobot,
@@ -26,9 +28,6 @@ export function SiteView({
   const titleId = useId()
   const descriptionId = useId()
   const siteRobots = robots.filter((robot) => robot.siteId === site.id)
-  const robotPositions = siteRobots.map((robot) => (
-    `${robot.name}: ${en.siteView.position} ${robot.position.x}, ${robot.position.y}.`
-  )).join(' ')
 
   return (
     <figure className="mt-5">
@@ -37,7 +36,7 @@ export function SiteView({
         <span className="text-xs text-slate-600">{en.siteView.schematic}</span>
       </figcaption>
       <p id={descriptionId} className="sr-only">
-        {en.siteView.mapDescription} {robotPositions}
+        {en.siteView.mapDescription}
       </p>
       <div
         role="group"
@@ -85,6 +84,7 @@ export function SiteView({
             key={robot.id}
             robot={robot}
             site={site}
+            animate={animate}
             isSelected={robot.id === selectedRobotId}
             onSelectRobot={onSelectRobot}
           />
