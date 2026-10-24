@@ -10,6 +10,7 @@ type SiteViewProps = {
   robots: readonly Robot[]
   selectedRobotId: string | null
   onSelectRobot: (robotId: string) => void
+  onClearSelection: () => void
 }
 
 const zoneStyles: Record<SiteZoneType, string> = {
@@ -24,6 +25,7 @@ export function SiteView({
   robots,
   selectedRobotId,
   onSelectRobot,
+  onClearSelection,
 }: SiteViewProps) {
   const titleId = useId()
   const descriptionId = useId()
@@ -47,6 +49,7 @@ export function SiteView({
         <svg
           viewBox={`0 0 ${site.width} ${site.height}`}
           aria-hidden="true"
+          onClick={onClearSelection}
           className="block h-auto w-full rounded-lg border border-slate-200 bg-slate-50"
         >
           <rect

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FleetSummary } from './components/FleetSummary'
 import { RobotDetails } from './components/RobotDetails'
 import { RobotList } from './components/RobotList'
@@ -10,11 +10,43 @@ import './App.css'
 
 function App() {
   const { robots, isPaused, togglePause } = useRobotSimulation()
+  const robotListHeadingRef = useRef<HTMLHeadingElement>(null)
+  const clearSelectionButtonRef = useRef<HTMLButtonElement>(null)
   const [selectedSiteId, setSelectedSiteId] = useState(mockSites[0]?.id ?? '')
   const [selectedRobotId, setSelectedRobotId] = useState<string | null>(null)
   const selectedSite = mockSites.find((site) => site.id === selectedSiteId) ?? null
   const siteRobots = robots.filter((robot) => robot.siteId === selectedSiteId)
   const selectedRobot = siteRobots.find((robot) => robot.id === selectedRobotId) ?? null
+
+  useEffect(() => {
+    if (selectedRobotId === null) return
+
+    function handleEscape(event: KeyboardEvent) {
+      if (
+        event.key !== 'Escape'
+        || event.defaultPrevented
+        || event.isComposing
+        || event.target instanceof HTMLSelectElement
+      ) return
+
+      setSelectedRobotId(null)
+      if (event.target === clearSelectionButtonRef.current) {
+        robotListHeadingRef.current?.focus()
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [selectedRobotId])
+
+  function clearSelection() {
+    setSelectedRobotId(null)
+  }
+
+  function clearSelectionFromList() {
+    clearSelection()
+    robotListHeadingRef.current?.focus()
+  }
 
   function handleSiteChange(siteId: string) {
     setSelectedSiteId(siteId)
@@ -78,9 +110,26 @@ function App() {
             aria-labelledby="robot-list-heading"
             className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 lg:col-span-3"
           >
-            <h2 id="robot-list-heading" className="text-base font-semibold">
-              {en.robotList.title}
-            </h2>
+            <div className="flex min-h-10 flex-wrap items-center justify-between gap-3">
+              <h2
+                id="robot-list-heading"
+                ref={robotListHeadingRef}
+                tabIndex={-1}
+                className="rounded text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+              >
+                {en.robotList.title}
+              </h2>
+              {selectedRobot && (
+                <button
+                  ref={clearSelectionButtonRef}
+                  type="button"
+                  onClick={clearSelectionFromList}
+                  className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+                >
+                  {en.robotList.clearSelection}
+                </button>
+              )}
+            </div>
             <p className="mt-1 text-sm text-slate-500">
               {en.robotList.description}
             </p>
@@ -109,6 +158,7 @@ function App() {
                 robots={siteRobots}
                 selectedRobotId={selectedRobotId}
                 onSelectRobot={setSelectedRobotId}
+                onClearSelection={clearSelection}
               />
             ) : (
               <p className="mt-5 text-sm text-slate-600">{en.siteView.empty}</p>
@@ -126,7 +176,10 @@ function App() {
             <p className="mt-1 text-sm text-slate-500">
               {en.robotDetails.description}
             </p>
-            <RobotDetails robot={selectedRobot} siteName={selectedSite?.name ?? ''} />
+            <RobotDetails
+              robot={selectedRobot}
+              siteName={selectedSite?.name ?? ''}
+            />
           </aside>
         </div>
       </div>

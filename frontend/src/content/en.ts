@@ -16,6 +16,7 @@ export const en = {
   },
   robotList: {
     title: 'Robots',
+    clearSelection: 'Clear selection',
     description: 'Browse the fleet.',
     selected: 'Selected',
     empty: 'No robots to display.',
@@ -40,8 +41,8 @@ export const en = {
     empty: 'No warehouse selected.',
     description: 'Site layout and robot positions.',
     schematic: 'Schematic - not to scale',
-    mapDescription: 'Warehouse floor plan with storage, loading, and charging areas. Use Tab to focus robots and Enter or Space to select them. Robot positions use local schematic units measured from the top-left corner.',
-    mockPositions: 'Simulated positions update once per second. Select a robot on the map or in the fleet list to view its details.',
+    mapDescription: 'Warehouse floor plan with storage, loading, and charging areas. Use Tab to focus robots and Enter or Space to select them. Press Escape to clear selection. Robot positions use local schematic units measured from the top-left corner.',
+    mockPositions: 'Simulated positions update once per second. Select a robot on the map or in the fleet list to view its details. Click the map background or press Escape to clear selection.',
     zones: {
       storage: 'Storage',
       loading: 'Loading',
@@ -53,5 +54,6 @@ export const en = {
     description: 'A closer look at a selected robot.',
     empty: 'Select a robot to view its details.',
     selected: 'Selected robot',
+    notSelected: 'No robot selected.',
   },
 } as const
