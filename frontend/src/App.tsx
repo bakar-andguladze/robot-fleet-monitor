@@ -1,3 +1,5 @@
+import { RobotList } from './components/RobotList'
+import { mockRobots } from './data/mockRobots'
 import { en } from './content/en'
 import './App.css'
 
@@ -42,11 +44,7 @@ function App() {
             <p className="mt-1 text-sm text-slate-500">
               {en.robotList.description}
             </p>
-            <div className="mt-5 flex min-h-48 flex-1 items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6">
-              <p className="text-center text-sm text-slate-500">
-                {en.robotList.placeholder}
-              </p>
-            </div>
+            <RobotList robots={mockRobots} />
           </section>
 
           <section

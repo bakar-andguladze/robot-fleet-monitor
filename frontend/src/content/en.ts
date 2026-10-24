@@ -11,7 +11,14 @@ export const en = {
   robotList: {
     title: 'Robots',
     description: 'Browse the fleet.',
-    placeholder: 'Robot list placeholder',
+    battery: 'Battery',
+    empty: 'No robots to display.',
+  },
+  robotStatus: {
+    moving: 'Moving',
+    idle: 'Idle',
+    charging: 'Charging',
+    error: 'Needs attention',
   },
   siteView: {
     title: 'Site view',
