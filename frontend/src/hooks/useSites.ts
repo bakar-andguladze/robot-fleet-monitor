@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react'
-import { fetchFleetData } from '../api/fleet'
-import type { FleetData } from '../types/fleet'
+import { fetchSites } from '../api/fleet'
+import type { Site } from '../types/site'
 
-type FleetDataState =
+type SitesState =
   | { status: 'loading' }
   | { status: 'error' }
-  | { status: 'success'; data: FleetData }
+  | { status: 'success'; sites: readonly Site[] }
 
-export function useFleetData() {
-  const [state, setState] = useState<FleetDataState>({ status: 'loading' })
+export function useSites() {
+  const [state, setState] = useState<SitesState>({ status: 'loading' })
   const [requestId, setRequestId] = useState(0)
 
   useEffect(() => {
     const controller = new AbortController()
 
-    fetchFleetData(controller.signal)
-      .then((data) => {
-        if (!controller.signal.aborted) setState({ status: 'success', data })
+    fetchSites(controller.signal)
+      .then((sites) => {
+        if (!controller.signal.aborted) setState({ status: 'success', sites })
       })
       .catch(() => {
         if (!controller.signal.aborted) {

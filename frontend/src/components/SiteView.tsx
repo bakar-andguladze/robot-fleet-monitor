@@ -93,7 +93,7 @@ export function SiteView({
           />
         ))}
       </div>
-      <p className="mt-3 text-xs text-slate-600">{en.siteView.mockPositions}</p>
+      <p className="mt-3 text-xs text-slate-600">{en.siteView.positions}</p>
     </figure>
   )
 }

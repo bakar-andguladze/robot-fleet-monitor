@@ -1,4 +1,3 @@
-import type { FleetData } from '../types/fleet'
 import type { Robot } from '../types/robot'
 import type { Site, SiteZone } from '../types/site'
 
@@ -47,30 +46,31 @@ function isRobot(value: unknown): value is Robot {
 }
 
 async function fetchJson(path: string, signal: AbortSignal): Promise<unknown> {
-  const response = await fetch(path, { signal })
+  const response = await fetch(path, {
+    signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
+  })
   if (!response.ok) {
     throw new Error('Fleet request failed with status ' + response.status)
   }
   return response.json()
 }
 
-export async function fetchFleetData(signal: AbortSignal): Promise<FleetData> {
-  const [sites, robots] = await Promise.all([
-    fetchJson('/api/sites', signal),
-    fetchJson('/api/robots', signal),
-  ])
-
+export async function fetchSites(signal: AbortSignal): Promise<Site[]> {
+  const sites = await fetchJson('/api/sites', signal)
   if (!Array.isArray(sites) || !sites.every(isSite)
-    || !Array.isArray(robots) || !robots.every(isRobot)) {
-    throw new Error('Invalid fleet data received from the API')
+    || new Set(sites.map((site) => site.id)).size !== sites.length) {
+    throw new Error('Invalid warehouse data received from the API')
   }
+  return sites
+}
 
-  const siteIds = new Set(sites.map((site) => site.id))
-  const robotIds = new Set(robots.map((robot) => robot.id))
-  if (siteIds.size !== sites.length || robotIds.size !== robots.length
-    || robots.some((robot) => !siteIds.has(robot.siteId))) {
-    throw new Error('Inconsistent fleet data received from the API')
+export async function fetchRobots(site: Site, signal: AbortSignal): Promise<Robot[]> {
+  const robots = await fetchJson('/api/robots?siteId=' + encodeURIComponent(site.id), signal)
+  if (!Array.isArray(robots) || !robots.every(isRobot)
+    || new Set(robots.map((robot) => robot.id)).size !== robots.length
+    || robots.some((robot) => robot.siteId !== site.id
+      || robot.position.x > site.width || robot.position.y > site.height)) {
+    throw new Error('Invalid robot data received from the API')
   }
-
-  return { sites, robots }
+  return robots
 }

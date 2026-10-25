@@ -78,9 +78,8 @@ Run `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build` in `bac
 After building, `npm start` runs the compiled server.
 Keep `backend/data/` alongside `backend/dist/`; fixtures are read at runtime rather than copied into the build.
 
-The frontend loads initial warehouse and robot data from the API.
-The API now serves current simulated positions.
-The frontend still starts its local demo simulation from the fetched state; consuming backend updates continuously is the next integration step.
+The frontend loads warehouse layouts once and polls the selected warehouse for current robot snapshots.
+All robot movement is simulated by the backend; the browser displays the received positions.
 
 ## Running the dashboard
 
@@ -88,7 +87,10 @@ Start the backend with `npm run dev` from `backend/`. In a second terminal, run 
 
 The frontend requests `/api/sites` and `/api/robots` through Vite's local proxy. By default the proxy targets `http://localhost:3000`. If the backend uses a different port, copy `frontend/.env.example` to `frontend/.env`, set `API_PROXY_TARGET` to the backend URL, and restart Vite. The same proxy works with `npm run preview` for a local build preview. A deployed build requires its host to forward `/api` to the backend.
 
-The dashboard waits for both datasets before starting its simulation. Failed requests or invalid response data show an error with a retry button. There is no fallback to frontend fixtures. The old frontend fixtures remain as test data.
+Warehouse loading failures show an error with a retry button.
+Robot loading and refresh failures show a connection warning and retry automatically while preserving the last valid snapshot for the selected warehouse.
+Responses are checked for valid shapes, unique robot IDs, warehouse membership, and position bounds before display.
+There is no fallback to frontend fixtures; the remaining frontend fixtures are test data.
 
 Run `npm run lint`, `npm test`, and `npm run build` in `frontend/` to check the UI.
 
@@ -116,8 +118,14 @@ Multiple backend processes would each run their own simulation; sharing state ac
 
 ## Update delivery and scaling
 
-The planned frontend integration uses polling once per second for the selected warehouse, loads static layouts once, and avoids overlapping requests.
-Polling will pause while the page is hidden and resume with fresh data when it becomes visible.
+The frontend loads static layouts once and requests robots only for the selected warehouse.
+The next refresh is scheduled one second after the previous request finishes, so slow responses do not create overlapping requests.
+Requests time out after ten seconds; failed refreshes retain the last valid snapshot and show a warning while retrying.
+Switching warehouses cancels the previous request, and late responses cannot replace the current warehouse data.
+Polling pauses while the page is hidden and resumes immediately when it becomes visible.
+The Pause updates control freezes this browser's view while the backend simulation continues; Resume updates fetches fresh data immediately.
+Switching warehouses while paused loads one snapshot for the new warehouse.
+Try again restarts live updates, including when updates were paused.
 This keeps the initial implementation small while limiting unnecessary requests and payloads.
 
 Polling cost depends on robot count, payload size, update frequency, and concurrent viewers; changing transport alone does not reduce the cost of repeatedly sending the same full snapshot.

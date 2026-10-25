@@ -5,7 +5,7 @@ export const en = {
     description: 'Monitor your robots across sites.',
   },
   fleetData: {
-    loading: 'Loading fleet data?',
+    loading: 'Loading warehouses...',
     errorTitle: 'Unable to load the fleet',
     errorDescription: 'Fleet data is unavailable. Please try again.',
     retry: 'Try again',
@@ -14,11 +14,18 @@ export const en = {
     title: 'Fleet summary',
     total: 'Total robots',
   },
-  simulation: {
-    running: 'Simulation running',
-    paused: 'Simulation paused',
-    pause: 'Pause simulation',
-    resume: 'Resume simulation',
+  updates: {
+    running: 'Live updates',
+    paused: 'Updates paused',
+    hidden: 'Updates paused while tab is hidden',
+    loading: 'Loading robots...',
+    delayed: 'Updates delayed',
+    pause: 'Pause updates',
+    resume: 'Resume updates',
+    errorTitle: 'Robot updates are unavailable',
+    errorDescription: 'Unable to load robots for this warehouse. Retrying automatically.',
+    staleDescription: 'Showing the last received data. Retrying automatically.',
+    pausedErrorDescription: 'Updates are paused. Resume updates or try again to reconnect.',
   },
   robotList: {
     title: 'Robots',
@@ -48,7 +55,7 @@ export const en = {
     description: 'Site layout and robot positions.',
     schematic: 'Schematic - not to scale',
     mapDescription: 'Warehouse floor plan with storage, loading, and charging areas. Use Tab to focus robots and Enter or Space to select them. Press Escape to clear selection. Robot positions use local schematic units measured from the top-left corner.',
-    mockPositions: 'Simulated positions update once per second. Select a robot on the map or in the fleet list to view its details. Click the map background or press Escape to clear selection.',
+    positions: 'Robot positions refresh approximately once per second while updates are running. Pausing freezes this view while robots keep moving. Select a robot on the map or in the fleet list to view its details. Click the map background or press Escape to clear selection.',
     zones: {
       storage: 'Storage',
       loading: 'Loading',

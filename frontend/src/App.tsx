@@ -1,11 +1,11 @@
 import { useRef } from 'react'
 import { FleetDashboard } from './components/FleetDashboard'
-import { useFleetData } from './hooks/useFleetData'
+import { useSites } from './hooks/useSites'
 import { en } from './content/en'
 import './App.css'
 
 function App() {
-  const { state, retry } = useFleetData()
+  const { state, retry } = useSites()
   const headingRef = useRef<HTMLHeadingElement>(null)
 
   function handleRetry() {
@@ -54,7 +54,7 @@ function App() {
           </section>
         )}
 
-        {state.status === 'success' && <FleetDashboard {...state.data} />}
+        {state.status === 'success' && <FleetDashboard sites={state.sites} />}
       </div>
     </main>
   )
