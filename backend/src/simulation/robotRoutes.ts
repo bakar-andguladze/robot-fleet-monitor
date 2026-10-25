@@ -13,6 +13,17 @@ export const robotRoutes: Readonly<Record<string, RobotRoute>> = {
       { x: 565, y: 450 },
     ],
   },
+  'RBT-003': {
+    siteId: 'site-south',
+    speed: 18,
+    waypoints: [
+      { x: 790, y: 230 },
+      { x: 500, y: 230 },
+      { x: 500, y: 450 },
+      { x: 700, y: 450 },
+      { x: 700, y: 230 },
+    ],
+  },
   'RBT-005': {
     siteId: 'site-south',
     speed: 24,

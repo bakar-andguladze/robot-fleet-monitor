@@ -100,19 +100,27 @@ Run `npm run lint`, `npm test`, and `npm run build` in `frontend/` to check the 
 One shared simulation runs per backend process and updates robot positions, battery levels, and statuses in memory approximately once per second, whether or not a dashboard is connected.
 The JSON fixtures seed the initial state; restarting the backend resets the simulation.
 Only robots marked `moving` advance; idle, charging, and error robots retain their positions.
-Moving robots lose 0.5 battery percentage points per second, and charging robots gain 1 point per second; these accelerated demo rates live in `backend/src/simulation/createRobotSimulator.ts`.
-Idle and error robots retain their battery levels.
+Moving robots lose 0.5 battery percentage points per second, and charging robots gain 1 point per second; these accelerated demo rates and the 20% threshold live in `backend/src/simulation/robotChargingCycle.ts`.
+Idle and error robots retain their positions and battery levels.
 Battery levels remain between 0 and 100%, with fractional values kept internally and rounded for display.
-At 0%, a moving robot stops at its depletion position and changes to `error` (Needs attention); it stays there until the simulation is restarted.
-At 100%, a charging robot becomes `idle` and stays in place.
-Battery changes use elapsed time from the initial snapshot, so delayed callbacks do not skip depletion or charging completion, and HTTP requests do not affect the rates.
+At 20% or less, moving robots head directly to a charging area in their warehouse, continuing to drain their battery during the trip.
+The first trip selects the nearest point slightly inside a charging area; subsequent cycles reuse that assigned point.
+Robots remain `moving` while travelling and become `charging` only after arrival.
+At full charge, a robot with a work route drives back to its first work waypoint and continues the route; the charging cycle repeats automatically.
+Seeded charging robots also leave when full if they have a work route; Grendizer has one in the demo.
+A charging robot without a work route finishes at 100% and remains idle.
+If there is no charging area, or a robot cannot reach it before its battery empties, it stops at the depletion position and becomes `error` (Needs attention).
+Reaching the charging area exactly at 0% still allows charging to begin.
+Initially idle or faulted robots are not automatically dispatched or recovered.
+The initial trip and repeatable cycle are prepared at startup; elapsed monotonic time selects the current phase, and complete cycles are skipped arithmetically after long delays.
+HTTP requests do not advance the simulation or affect battery rates.
 Already-empty moving robots and already-full charging robots transition at startup.
-There is no automatic routing to charging stations, recovery, or restart of completed robots.
 
 Demo routes live in `backend/src/simulation/robotRoutes.ts`, with speeds in schematic units per second.
-Each moving robot needs a route for its warehouse; startup rejects missing routes, invalid speeds, out-of-bounds waypoints, and zero-length paths.
-Routes begin at the seeded robot position, join the configured waypoints, and loop back to that starting position.
-Functional zones remain traversable; collision avoidance and obstacle routing are outside this simulation.
+Each moving robot needs a route for its warehouse; a charging robot needs one to resume work after charging.
+Startup rejects missing required routes, mismatched warehouses, invalid speeds, out-of-bounds waypoints, and zero-length paths.
+Robots join the first configured work waypoint from their current position, then loop through the configured waypoints back to the first.
+Charging trips follow straight lines, and functional zones remain traversable; collision avoidance, obstacle routing, and charging-station capacity are outside this simulation.
 
 Route geometry is prepared once at startup, and movement uses elapsed monotonic time so delayed timer callbacks do not slow the simulated speed.
 HTTP requests read the latest state without advancing the simulation or starting timers.

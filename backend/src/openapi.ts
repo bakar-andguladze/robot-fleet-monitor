@@ -20,7 +20,7 @@ export const openApiDocument = {
     version: '1.0.0',
     description: 'Read-only warehouse layouts and current simulated robot snapshots. '
       + 'Coordinates use local schematic units. '
-      + 'The backend updates robot positions approximately once per second. These endpoints return snapshots rather than streaming telemetry.',
+      + 'The backend updates positions, battery levels, and statuses approximately once per second, including automatic charging trips and return to work. These endpoints return snapshots rather than streaming telemetry.',
   },
   servers: [{ url: '/', description: 'Current API server' }],
   tags: [

@@ -198,7 +198,7 @@ describe('shared simulation lifecycle', () => {
 
   const boundaryCases: { status: Robot['status']; batteryPercent: number; expected: Robot['status'] }[] = [
     { status: 'moving', batteryPercent: 0, expected: 'error' },
-    { status: 'charging', batteryPercent: 100, expected: 'idle' },
+    { status: 'charging', batteryPercent: 100, expected: 'moving' },
   ]
   it.each(boundaryCases)('normalizes a $status robot at $batteryPercent% before the first timer tick', ({ status, batteryPercent, expected }) => {
     const { fleet, routes, robot } = fixture(status)
