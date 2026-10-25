@@ -79,8 +79,8 @@ After building, `npm start` runs the compiled server.
 Keep `backend/data/` alongside `backend/dist/`; fixtures are read at runtime rather than copied into the build.
 
 The frontend loads initial warehouse and robot data from the API.
-Movement is still simulated in the browser using predefined routes.
-The API serves initial snapshots rather than live telemetry.
+The API now serves current simulated positions.
+The frontend still starts its local demo simulation from the fetched state; consuming backend updates continuously is the next integration step.
 
 ## Running the dashboard
 
@@ -91,3 +91,38 @@ The frontend requests `/api/sites` and `/api/robots` through Vite's local proxy.
 The dashboard waits for both datasets before starting its simulation. Failed requests or invalid response data show an error with a retry button. There is no fallback to frontend fixtures. The old frontend fixtures remain as test data.
 
 Run `npm run lint`, `npm test`, and `npm run build` in `frontend/` to check the UI.
+
+
+## Backend simulation
+
+One shared simulation runs per backend process and updates robot positions in memory approximately once per second, whether or not a dashboard is connected.
+The JSON fixtures seed the initial state; restarting the backend resets the simulation.
+Only robots marked `moving` advance; idle, charging, and error robots retain their positions.
+Battery levels and statuses remain fixed in this increment.
+
+Demo routes live in `backend/src/simulation/robotRoutes.ts`, with speeds in schematic units per second.
+Each moving robot needs a route for its warehouse; startup rejects missing routes, invalid speeds, out-of-bounds waypoints, and zero-length paths.
+Routes begin at the seeded robot position, join the configured waypoints, and loop back to that starting position.
+Functional zones remain traversable; collision avoidance and obstacle routing are outside this simulation.
+
+Route geometry is prepared once at startup, and movement uses elapsed monotonic time so delayed timer callbacks do not slow the simulated speed.
+HTTP requests read the latest state without advancing the simulation or starting timers.
+`GET /api/robots?siteId=site-north` returns the current North Warehouse robots, with `Cache-Control: no-store` to prevent caching old positions.
+The simulation timer is cleared during server shutdown.
+
+The simulation is independent of HTTP delivery, so a later streaming transport can reuse it.
+This is an in-memory demo with read-only endpoints; real robot telemetry, private fleet data, and commands would require further validation, access control, and persistence.
+Multiple backend processes would each run their own simulation; sharing state across replicas is a separate deployment concern.
+
+## Update delivery and scaling
+
+The planned frontend integration uses polling once per second for the selected warehouse, loads static layouts once, and avoids overlapping requests.
+Polling will pause while the page is hidden and resume with fresh data when it becomes visible.
+This keeps the initial implementation small while limiting unnecessary requests and payloads.
+
+Polling cost depends on robot count, payload size, update frequency, and concurrent viewers; changing transport alone does not reduce the cost of repeatedly sending the same full snapshot.
+If measurements justify it, Server-Sent Events could push server-to-browser updates, while batching or sending only changed records could reduce payload size.
+Browser rendering should also be measured when displaying large fleets.
+
+No fleet-size or concurrent-viewer performance limit has been established yet.
+Before choosing further optimizations, measure simulation time, endpoint latency, transferred bytes, and browser responsiveness with a larger generated fleet and multiple viewers.

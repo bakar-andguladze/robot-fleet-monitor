@@ -28,6 +28,7 @@ export function createApp(fleet: FleetData) {
   })
 
   app.get('/api/robots', (request, response) => {
+    response.set('Cache-Control', 'no-store')
     const { siteId } = request.query
 
     if (siteId === undefined) {
