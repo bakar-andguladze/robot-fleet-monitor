@@ -42,6 +42,41 @@ As the project develops, this `README` will document:
 - What is mocked or omitted and the tradeoffs involved.
 - Improvements that would be made with more time or for production use.
 
+## Running with Docker
+
+Install and start [Docker Desktop](https://docs.docker.com/desktop/), or use Docker Engine with the Compose v2 plugin.
+From the repository root:
+
+```sh
+docker compose up --build
+```
+
+Once both services are running, open the [dashboard](http://localhost:8080) or [Swagger UI](http://localhost:8080/api/docs/).
+The first build downloads the base images and installs dependencies; Node.js and npm are not needed on the host for this option.
+The frontend image builds React and serves it through Nginx, which forwards `/api` and `/health` requests to Express on the internal Docker network.
+Only the frontend is published, on localhost port 8080; the backend does not publish a host port.
+Compose waits for the backend health check before starting the frontend.
+The backend runs as a non-root user, and its runtime image contains compiled code, production dependencies, and the JSON fixtures.
+Local `node_modules`, build output, and `.env` files are excluded from the build contexts.
+
+No `.env` file is required.
+To use another host port, copy the root `.env.example` to `.env` and change `APP_PORT`; the backend's internal port remains 3000.
+The Docker setup does not load `backend/.env` or `frontend/.env`; those files are only for the npm setup.
+Changes to source code or seed data require rebuilding the images.
+Simulation state stays in memory; restarting the backend resets the fleet.
+
+To stop the stack and remove its containers and network:
+
+```sh
+docker compose down
+```
+
+The Dockerfiles use Node 24 and Nginx images available for AMD64 and ARM64 and do not force a CPU architecture, so builds can use the host's native architecture, including Apple Silicon.
+Docker starts the app locally; it does not publish a hosted demo.
+Builds and HTTP smoke checks were verified on Linux AMD64 and Linux ARM64 under Docker Desktop emulation; the containerized dashboard was also checked in a browser on AMD64.
+A native macOS run has not been verified.
+The npm instructions below remain available as an alternative and require Node.js 24 or later.
+
 ## Backend data API
 
 The Express backend loads initial warehouse and robot snapshots from `backend/data/sites.json` and `backend/data/robots.json`.
