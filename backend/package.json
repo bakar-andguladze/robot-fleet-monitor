@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "bench:api": "tsx benchmarks/api.ts",
+    "bench:ui": "tsx benchmarks/browser.ts"
   },
   "keywords": [],
   "author": "",
