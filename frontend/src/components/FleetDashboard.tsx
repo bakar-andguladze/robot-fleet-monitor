@@ -124,10 +124,10 @@ export function FleetDashboard({ sites }: { sites: readonly Site[] }) {
       )}
 
       {(hasSnapshot || !selectedSite) && (
-        <div className="grid items-stretch gap-5 lg:grid-cols-12">
+        <div className="grid items-start gap-5 md:grid-cols-12">
           <section
             aria-labelledby="robot-list-heading"
-            className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 lg:col-span-3"
+            className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 md:col-span-4 xl:col-span-3"
           >
             <div className="flex min-h-10 flex-wrap items-center justify-between gap-3">
               <h2
@@ -154,7 +154,6 @@ export function FleetDashboard({ sites }: { sites: readonly Site[] }) {
             </p>
             <RobotList
               robots={siteRobots}
-              siteName={selectedSite?.name ?? ''}
               selectedRobotId={selectedRobotId}
               onSelectRobot={setSelectedRobotId}
             />
@@ -162,7 +161,7 @@ export function FleetDashboard({ sites }: { sites: readonly Site[] }) {
 
           <section
             aria-labelledby="site-view-heading"
-            className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 lg:col-span-6"
+            className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 md:col-span-8 xl:col-span-6"
           >
             <h2 id="site-view-heading" className="text-base font-semibold">
               {en.siteView.title}
@@ -187,7 +186,7 @@ export function FleetDashboard({ sites }: { sites: readonly Site[] }) {
           <aside
             id="robot-details"
             aria-labelledby="robot-details-heading"
-            className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 lg:col-span-3"
+            className="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-5 md:col-span-12 xl:col-span-3"
           >
             <h2 id="robot-details-heading" className="text-base font-semibold">
               {en.robotDetails.title}

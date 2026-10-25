@@ -7,6 +7,14 @@ type FleetSummaryProps = {
   siteName: string
 }
 
+const metricStyles: Record<RobotStatus | 'total', string> = {
+  total: 'border-slate-900 bg-slate-900 text-white',
+  moving: 'border-teal-200 bg-teal-50',
+  idle: 'border-slate-200 bg-slate-50',
+  charging: 'border-amber-200 bg-amber-50',
+  error: 'border-rose-200 bg-rose-50',
+}
+
 const statuses: readonly RobotStatus[] = ['moving', 'idle', 'charging', 'error']
 
 export function FleetSummary({ robots, siteName }: FleetSummaryProps) {
@@ -20,7 +28,7 @@ export function FleetSummary({ robots, siteName }: FleetSummaryProps) {
     counts[robot.status] += 1
   }
 
-  const metrics = [
+  const metrics: { key: RobotStatus | 'total'; label: string; count: number }[] = [
     { key: 'total', label: en.fleetSummary.total, count: robots.length },
     ...statuses.map((status) => ({
       key: status,
@@ -44,9 +52,9 @@ export function FleetSummary({ robots, siteName }: FleetSummaryProps) {
         {metrics.map((metric) => (
           <div
             key={metric.key}
-            className={`rounded-lg border border-slate-200 bg-slate-50 p-4 ${metric.key === 'total' ? 'col-span-2 sm:col-span-1' : ''}`}
+            className={`rounded-lg border p-4 ${metric.key === 'total' || metric.count > 0 ? metricStyles[metric.key] : 'border-slate-200 bg-slate-50'} ${metric.key === 'total' ? 'col-span-2 sm:col-span-1' : ''}`}
           >
-            <dt className="text-sm text-slate-600">{metric.label}</dt>
+            <dt className={metric.key === 'total' ? 'text-sm text-slate-300' : 'text-sm text-slate-600'}>{metric.label}</dt>
             <dd className="mt-2 text-3xl font-semibold tabular-nums">
               {countFormatter.format(metric.count)}
             </dd>

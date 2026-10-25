@@ -54,8 +54,9 @@ export const en = {
     empty: 'No warehouse selected.',
     description: 'Site layout and robot positions.',
     schematic: 'Schematic - not to scale',
+    legend: 'Robot status legend',
     mapDescription: 'Warehouse floor plan with storage, loading, and charging areas. Use Tab to focus robots and Enter or Space to select them. Press Escape to clear selection. Robot positions use local schematic units measured from the top-left corner.',
-    positions: 'Robot positions refresh approximately once per second while updates are running. Pausing freezes this view while robots keep moving. Select a robot on the map or in the fleet list to view its details. Click the map background or press Escape to clear selection.',
+    positions: 'Select a robot on the map or in the list to view its details. Click the map background or press Escape to clear selection. Live positions refresh approximately every second; pausing freezes this view.',
     zones: {
       storage: 'Storage',
       loading: 'Loading',

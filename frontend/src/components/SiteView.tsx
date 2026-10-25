@@ -1,8 +1,9 @@
 import { useId } from 'react'
 import { en } from '../content/en'
-import type { Robot } from '../types/robot'
+import type { Robot, RobotStatus as Status } from '../types/robot'
 import type { Site, SiteZoneType } from '../types/site'
 import { RobotMarker } from './RobotMarker'
+import { RobotStatus } from './RobotStatus'
 
 type SiteViewProps = {
   site: Site
@@ -12,6 +13,8 @@ type SiteViewProps = {
   onSelectRobot: (robotId: string) => void
   onClearSelection: () => void
 }
+
+const statuses: readonly Status[] = ['moving', 'idle', 'charging', 'error']
 
 const zoneStyles: Record<SiteZoneType, string> = {
   storage: 'fill-slate-200 stroke-slate-400',
@@ -72,16 +75,22 @@ export function SiteView({
                 className={zoneStyles[zone.type]}
                 strokeWidth="2"
               />
-              <text
-                x={zone.x + 16}
-                y={zone.y + 30}
-                className="fill-slate-700 text-[18px] font-semibold"
-              >
-                {en.siteView.zones[zone.type]}
-              </text>
             </g>
           ))}
         </svg>
+        {site.zones.map((zone) => (
+          <span
+            key={zone.id}
+            aria-hidden="true"
+            className="pointer-events-none absolute text-[10px] leading-tight font-semibold text-slate-700 sm:text-xs"
+            style={{
+              left: `${((zone.x + 12) / site.width) * 100}%`,
+              top: `${((zone.y + 12) / site.height) * 100}%`,
+            }}
+          >
+            {en.siteView.zones[zone.type]}
+          </span>
+        ))}
         {siteRobots.map((robot) => (
           <RobotMarker
             key={robot.id}
@@ -93,7 +102,12 @@ export function SiteView({
           />
         ))}
       </div>
-      <p className="mt-3 text-xs text-slate-600">{en.siteView.positions}</p>
+      <ul aria-label={en.siteView.legend} className="mt-4 flex flex-wrap gap-2">
+        {statuses.map((status) => (
+          <li key={status}><RobotStatus status={status} /></li>
+        ))}
+      </ul>
+      <p className="mt-3 text-xs leading-relaxed text-slate-600">{en.siteView.positions}</p>
     </figure>
   )
 }

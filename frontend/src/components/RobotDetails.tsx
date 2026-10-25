@@ -1,3 +1,4 @@
+import { RobotStatus } from './RobotStatus'
 import { en } from '../content/en'
 import type { Robot } from '../types/robot'
 import { batteryFormatter, coordinateFormatter } from '../utils/formatters'
@@ -16,7 +17,7 @@ export function RobotDetails({ robot, siteName }: RobotDetailsProps) {
       {robot ? (
         <>
           <h3 className="text-xl font-semibold break-words">{robot.name}</h3>
-          <dl className="mt-5 space-y-4 text-sm">
+          <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2 xl:grid-cols-1">
             <div>
               <dt className="text-slate-600">{en.robotFields.id}</dt>
               <dd className="mt-1 font-medium">{robot.id}</dd>
@@ -27,7 +28,7 @@ export function RobotDetails({ robot, siteName }: RobotDetailsProps) {
             </div>
             <div>
               <dt className="text-slate-600">{en.robotFields.status}</dt>
-              <dd className="mt-1 font-medium">{en.robotStatus[robot.status]}</dd>
+              <dd className="mt-1"><RobotStatus status={robot.status} /></dd>
             </div>
             <div>
               <dt className="text-slate-600">{en.robotFields.battery}</dt>
