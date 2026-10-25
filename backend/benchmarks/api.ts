@@ -7,14 +7,16 @@ const results = []
 for (const count of fleetSizes) {
   const { fleet, routes } = createBenchmarkFleet(count)
   const simulate = createRobotSimulator(fleet, routes)
-  for (let tick = 0; tick < 200; tick++) fleet.robots = simulate(tick)
+  // Keep sampled times inside the active battery window for this movement check.
+  for (let tick = 0; tick < 200; tick++) fleet.robots = simulate(tick / 60)
   const ticks = []
   for (let tick = 0; tick < 2000; tick++) {
     const started = performance.now()
-    fleet.robots = simulate(tick)
+    fleet.robots = simulate((tick + 200) / 60)
     ticks.push(performance.now() - started)
   }
   assert.equal(fleet.robots.length, count)
+  assert.ok(fleet.robots.every(robot => robot.status === 'moving'), 'Benchmark robots must still be moving')
   const simulationMs = distribution(ticks)
   const api = await startBenchmarkApi(count)
   try {

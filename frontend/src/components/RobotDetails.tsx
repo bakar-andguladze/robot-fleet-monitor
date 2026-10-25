@@ -12,7 +12,7 @@ export function RobotDetails({ robot, siteName }: RobotDetailsProps) {
   return (
     <div className="mt-5">
       <p role="status" className="sr-only">
-        {robot ? `${en.robotDetails.selected}: ${robot.name}` : en.robotDetails.notSelected}
+        {robot ? `${en.robotDetails.selected}: ${robot.name}, ${en.robotStatus[robot.status]}` : en.robotDetails.notSelected}
       </p>
       {robot ? (
         <>

@@ -12,6 +12,10 @@ export type RobotRoute = {
 type Segment = { start: Position; end: Position; length: number }
 type PreparedRoute = { speed: number; segments: Segment[]; length: number }
 
+// Accelerated demo rates, in battery percentage points per second.
+const movementDrainPerSecond = 0.5
+const chargingGainPerSecond = 1
+
 export function createRobotSimulator(
   fleet: FleetData,
   routes: Readonly<Record<string, RobotRoute>>,
@@ -57,24 +61,31 @@ export function createRobotSimulator(
     }
 
     return initialRobots.map((robot) => {
+      if (robot.status === 'charging') {
+        const batteryPercent = Math.min(100, robot.batteryPercent + elapsedSeconds * chargingGainPerSecond)
+        return { ...robot, batteryPercent, status: batteryPercent === 100 ? 'idle' : 'charging' }
+      }
+
       const route = preparedRoutes.get(robot.id)
       if (!route) return robot
 
-      let remainingDistance = ((elapsedSeconds % (route.length / route.speed)) * route.speed) % route.length
+      const batteryPercent = Math.max(0, robot.batteryPercent - elapsedSeconds * movementDrainPerSecond)
+      // Stop at the depletion instant even if a timer skips past it.
+      const movingSeconds = Math.min(elapsedSeconds, robot.batteryPercent / movementDrainPerSecond)
+      let position = robot.position
+      let remainingDistance = ((movingSeconds % (route.length / route.speed)) * route.speed) % route.length
       for (const segment of route.segments) {
         if (remainingDistance <= segment.length) {
           const progress = remainingDistance / segment.length
-          return {
-            ...robot,
-            position: {
-              x: segment.start.x + (segment.end.x - segment.start.x) * progress,
-              y: segment.start.y + (segment.end.y - segment.start.y) * progress,
-            },
+          position = {
+            x: segment.start.x + (segment.end.x - segment.start.x) * progress,
+            y: segment.start.y + (segment.end.y - segment.start.y) * progress,
           }
+          break
         }
         remainingDistance -= segment.length
       }
-      return robot
+      return { ...robot, batteryPercent, status: batteryPercent === 0 ? 'error' : 'moving', position }
     })
   }
 }

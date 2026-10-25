@@ -97,10 +97,17 @@ Run `npm run lint`, `npm test`, and `npm run build` in `frontend/` to check the 
 
 ## Backend simulation
 
-One shared simulation runs per backend process and updates robot positions in memory approximately once per second, whether or not a dashboard is connected.
+One shared simulation runs per backend process and updates robot positions, battery levels, and statuses in memory approximately once per second, whether or not a dashboard is connected.
 The JSON fixtures seed the initial state; restarting the backend resets the simulation.
 Only robots marked `moving` advance; idle, charging, and error robots retain their positions.
-Battery levels and statuses remain fixed in this increment.
+Moving robots lose 0.5 battery percentage points per second, and charging robots gain 1 point per second; these accelerated demo rates live in `backend/src/simulation/createRobotSimulator.ts`.
+Idle and error robots retain their battery levels.
+Battery levels remain between 0 and 100%, with fractional values kept internally and rounded for display.
+At 0%, a moving robot stops at its depletion position and changes to `error` (Needs attention); it stays there until the simulation is restarted.
+At 100%, a charging robot becomes `idle` and stays in place.
+Battery changes use elapsed time from the initial snapshot, so delayed callbacks do not skip depletion or charging completion, and HTTP requests do not affect the rates.
+Already-empty moving robots and already-full charging robots transition at startup.
+There is no automatic routing to charging stations, recovery, or restart of completed robots.
 
 Demo routes live in `backend/src/simulation/robotRoutes.ts`, with speeds in schematic units per second.
 Each moving robot needs a route for its warehouse; startup rejects missing routes, invalid speeds, out-of-bounds waypoints, and zero-length paths.
@@ -154,6 +161,7 @@ The checks print JSON results; failed requests, incomplete fleets, missing refre
 ### Method
 
 The API check measures 2,000 simulation steps after 200 warm-up steps, then runs separate eight-second cases with 1, 10, and 50 polling viewers.
+Simulation sample times stay within the first minute so the generated robots remain moving throughout the measurement.
 Each viewer consumes and checks the complete response before waiting one second, matching the dashboard's request cadence.
 Viewers start together, and the shared backend simulation continues independently of their requests.
 Response timings include receiving and parsing the body in the load client; the client and API share a Node process, so these are local round-trip measurements rather than isolated server timings.
@@ -169,6 +177,7 @@ Initial rendering includes navigation and waiting for the complete robot list, r
 
 ### Observed baseline
 
+This historical baseline was recorded before battery simulation and the dashboard status indicators were added; rerun the checks to measure the current implementation.
 One local run on 26 October 2026 used Windows 10.0.26300, an Intel Core i7-13700H, Node 25.0.0, and Edge 156.0.4314.42.
 All 976 measured API requests succeeded, and the browser checks passed for both fleet sizes.
 

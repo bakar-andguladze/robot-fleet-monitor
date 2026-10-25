@@ -8,6 +8,7 @@ export function startRobotSimulation(
   routes: Readonly<Record<string, RobotRoute>> = robotRoutes,
 ) {
   const simulate = createRobotSimulator(fleet, routes)
+  fleet.robots = simulate(0)
   const startedAt = performance.now()
   const timer = setInterval(() => {
     fleet.robots = simulate((performance.now() - startedAt) / 1000)
